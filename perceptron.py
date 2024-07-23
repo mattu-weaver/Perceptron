@@ -57,7 +57,7 @@ class Perceptron:
             threshold = self.thresholds[activation_name]
             return lambda x: np.where(activation_fn(x) >= threshold, 1, 0)  # Apply threshold
         else:
-            return activation_fn  # No thresholdhin lambda
+            return activation_fn  # No thresholdh
 
     def get_expected_output(self: 'Perceptron') -> Union[List[int], None]:
         if self.logic_to_apply == 'AND':
@@ -69,28 +69,37 @@ class Perceptron:
         else:
             return None
 
-    def train(self, epochs: int = 10) -> None:
+    def train(self, epochs: int = 10, info_text: str = "") -> None:
         activation_function = getattr(self, self.activator.lower(), self.step)
-        errors = []  # List to store errors for each epoch
+        errors = []
 
         for epoch in range(epochs):
-            epoch_error = 0  # Error for the current epoch
+            epoch_errors = []  # List to store errors for each example in this epoch
+
             for x, expected_output in zip(self.inputs, self.expected_output):
                 x = np.insert(x, 0, 1)
                 weighted_sum = np.dot(x, self.weights)
 
-                predicted_output = int(activation_function(weighted_sum))
+                predicted_output = activation_function(weighted_sum)
                 error = expected_output - predicted_output
-                epoch_error += abs(error)  # Accumulate error for the epoch
+                epoch_errors.append(abs(error))
                 self.weights += self.learning_rate * error * x
 
-            errors.append(epoch_error)  # Store the epoch's total error
+            avg_epoch_error = sum(epoch_errors) / len(epoch_errors)
+            errors.append(avg_epoch_error)
 
-        # Plot the error over epochs
+            # Plot the error over epochs
         plt.plot(range(1, epochs + 1), errors, marker='o')
         plt.xlabel('Epoch')
-        plt.ylabel('Total Error')
-        plt.title('Error vs. Epoch')
+        plt.ylabel('Average Error')
+        plt.title('Perceptron Training')
+
+        # Add text box with information
+        if info_text:
+            props = dict(boxstyle='round', facecolor='tab:orange', alpha=0.6)
+            plt.text(0.95, 0.95, info_text, transform=plt.gca().transAxes,
+                     fontsize=10, horizontalalignment='right', verticalalignment='top', bbox=props)
+
         plt.show()
 
     def predict(self, x: np.ndarray) -> np.ndarray:
