@@ -24,9 +24,12 @@ The [`perceptron.py`](perceptron.py) file defines a class called Perceptron - th
 
 The image shows a percpetron with 4 inputs, for our scenario, there are only 2.
 
-## So what happens?
+## The process in a nutshell
 - We create a new Perceptron and specify if we want it to learn the AND or OR operation.
 - We also specify the number of epochs (how many steps of training to apply), the learning rate (how quickly or slowly the weights of the Perceptron are adjusted) and the type of activation function to use.
 - The perceptron trains itself using the data shown in the table above and also provides a visual for how the training progressed.
 - Once trained, we can ask the Perceptron to predict a logical output for two inputs A and B.
 - The app does this many times and reports how successul it was.
+
+## What happens during training?
+- We expect the errors between predicted and actual values for A AND B or A OR B to decrease over time. The decrease in errors depends on the parameters we use, especially the activator function and the learning rate. While each training process is different, a few examples are provided here. The plot legend shows what parameters were used during training. 
