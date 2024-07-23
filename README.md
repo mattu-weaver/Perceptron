@@ -20,6 +20,13 @@ The aim is to predict the logical outcome for two bits using either an AND or an
 ## What does our perceptron look like?
 The [`perceptron.py`](perceptron.py) file defines a class called Perceptron - this has 2 inputs (representing A and B from our table) and a single output - this will be a prediction for  A AND B or for A OR B. I wrote a [Medium article](https://medium.com/ai-mind-labs/perceptron-101-the-building-blocks-of-a-neural-network-496f6b9b3826) that describes the Perceptron in more detail if you need it.
 
+![A simple perceptron](https://miro.medium.com/v2/resize:fit:1100/format:webp/1*dsVvCeoxlU4GZ1y701Mo8g.png)
+
+The image shows a percpetron with 4 inputs, for our scenario, there are only 2.
+
 ## So what happens?
 - We create a new Perceptron and specify if we want it to learn the AND or OR operation.
-- We also specify the number of epochs (how many steps of training to apply), the learning rate (how quickly or slowly the weights of the Percptron are adjusted) and the type of activation function to use.
+- We also specify the number of epochs (how many steps of training to apply), the learning rate (how quickly or slowly the weights of the Perceptron are adjusted) and the type of activation function to use.
+- The perceptron trains itself using the data shown in the table above and also provides a visual for how the training progressed.
+- Once trained, we can ask the Perceptron to predict a logical output for two inputs A and B.
+- The app does this many times and reports how successul it was.
