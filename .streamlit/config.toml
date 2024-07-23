@@ -1,0 +1,30 @@
+# Logging levels for loguru
+# TRACE (most verbose)
+# DEBUG
+# INFO
+# SUCCESS
+# WARNING
+# ERROR
+# CRITICAL (most severe)
+[logger]
+level = 'INFO'
+format = '{time:YYYY MM DD HH:MM:SS} | {level} | {file} | {function} | Line {line} | {message}'
+
+[data]
+data = [[0, 0], [0, 1], [1, 0], [1, 1]]
+steps = 2
+
+[AND]
+plot_title1 = "Error Convergence for logical AND"
+plot_title2= "Decision Boundary for logical AND"
+output = [0, 0, 0, 1]
+
+[OR]
+plot_title1 = "Error Convergence for logical OR"
+plot_title2= "Decision Boundary for logical OR"
+output = [0, 1, 1, 1]
+
+[XOR]
+plot_title1 = "Error Convergence for logical XOR"
+plot_title2= "Decision Boundary for logical XOR"
+output = [0, 1, 1, 0]
