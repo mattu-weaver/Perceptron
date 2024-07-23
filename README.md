@@ -18,4 +18,4 @@ The aim is to predict the logical outcome for two bits using either an AND or an
 - The outcome of and XOR operation is 1 when only when A and B are different to each other.
 
 ## What does our perceptron look like?
-The [`perceptron.py`](perceptron.py)
+The [`perceptron.py`](perceptron.py) file defines a class called Perceptron - this has 2 inputs (representing A and B from our table) and a single output - this will be a prediction for  A AND B or for A OR B. I wrote a [Medium article](https://medium.com/ai-mind-labs/perceptron-101-the-building-blocks-of-a-neural-network-496f6b9b3826) that describes the Perceptron in more detail that may help if needed.
