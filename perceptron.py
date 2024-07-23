@@ -1,5 +1,6 @@
 from typing import Dict, List, Union, Optional, Callable
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 class Perceptron:
@@ -70,18 +71,27 @@ class Perceptron:
 
     def train(self, epochs: int = 10) -> None:
         activation_function = getattr(self, self.activator.lower(), self.step)
+        errors = []  # List to store errors for each epoch
 
-        for _ in range(epochs):
+        for epoch in range(epochs):
+            epoch_error = 0  # Error for the current epoch
             for x, expected_output in zip(self.inputs, self.expected_output):
                 x = np.insert(x, 0, 1)
                 weighted_sum = np.dot(x, self.weights)
 
-                # Apply activation function
-                predicted_output = activation_function(weighted_sum)
-
-                # Update weights
+                predicted_output = int(activation_function(weighted_sum))
                 error = expected_output - predicted_output
+                epoch_error += abs(error)  # Accumulate error for the epoch
                 self.weights += self.learning_rate * error * x
+
+            errors.append(epoch_error)  # Store the epoch's total error
+
+        # Plot the error over epochs
+        plt.plot(range(1, epochs + 1), errors, marker='o')
+        plt.xlabel('Epoch')
+        plt.ylabel('Total Error')
+        plt.title('Error vs. Epoch')
+        plt.show()
 
     def predict(self, x: np.ndarray) -> np.ndarray:
         x = np.insert(x, 0, 1)

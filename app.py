@@ -1,61 +1,37 @@
 from perceptron import Perceptron
 import numpy as np
 import toml
-import seaborn as sns
-import matplotlib.pyplot as plt
+import random
 
 
-def perceptron_quality(num_tests):
+def perceptron_quality(pctron, num_tests, logic):
     num_correct = 0
-
+    all_possible_inputs = [[0, 0], [0, 1], [1, 0], [1, 1]]
     for _ in range(num_tests):
-        input_data = np.random.randint(0, 2, size=2)
+        input_data = random.choice(all_possible_inputs)
+        predicted_output = pctron.predict(input_data)
 
-        # Convert NumPy array to a list of regular Python integers
-        input_data_list = input_data.tolist()
-
-        predicted_output = perceptron.predict(input_data)
-
-        expected_output = perceptron.get_expected_output()[
-            perceptron.inputs.index(input_data_list)  # Use the converted list
-        ]
+        # Calculate expected output based on the logic being trained
+        if logic == 'AND':
+            expected_output = 1 if all(input_data) else 0
+        elif logic == 'OR':
+            expected_output = 1 if any(input_data) else 0
+        else:
+            raise ValueError("Invalid logic_to_apply")
 
         if predicted_output == expected_output:
             num_correct += 1
-
     return (num_correct / num_tests) * 100
 
 
-cfg = toml.load('.streamlit/config.toml')
-perceptron = Perceptron(logic_to_apply='OR', learning_rate=0.002,activator='SIGMOID', use_threshold=False)
-perceptron.train(100)
+epochs = 200
+# Ensure the logic is consistent during training and evaluation
+logic_to_apply = 'AND'  # Or 'AND' if you want to train for AND
+perceptron = Perceptron(logic_to_apply=logic_to_apply, learning_rate=0.01, activator='STEP', use_threshold=False)
+perceptron.train(epochs)
 
-acc = perceptron_quality(500)
+acc = perceptron_quality(perceptron, 500, logic_to_apply)
 print(f"Accuracy: {acc:.2f}%")
 
 
-def train_and_track_error(perceptron, epochs):
-    errors = []
-    for epoch in range(epochs):
-        total_error = 0
-        for x, expected_output in zip(perceptron.inputs, perceptron.expected_output):
-            predicted_output = perceptron.predict(x)
-            error = expected_output - predicted_output
-            x_with_bias = np.insert(x, 0, 1)  # Add bias only for weight update
-            perceptron.weights += perceptron.learning_rate * error * x_with_bias
-            total_error += abs(error)
-        errors.append(total_error)
-    return errors
 
-
-# Training with error tracking
-errors = train_and_track_error(perceptron, 1000)
-
-# Plotting with Seaborn
-sns.set_theme(style="darkgrid")
-plt.figure(figsize=(10, 6))
-sns.lineplot(x=range(1, 1001), y=errors, marker="o")
-plt.title("Perceptron Training Error vs. Epochs")
-plt.xlabel("Epoch")
-plt.ylabel("Total Absolute Error")
-plt.show()
