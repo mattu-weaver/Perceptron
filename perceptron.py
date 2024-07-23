@@ -6,9 +6,10 @@ class Perceptron:
     def __init__(self: 'Perceptron',
                  logic_to_apply: str = 'AND',
                  input_size: int = 2,
-                 learning_rate: float = 0.006,
+                 learning_rate: float = 0.002,
                  activator: str = 'SIGMOID',
-                 thresholds: Dict[str, float] = None):
+                 thresholds: Dict[str, float] = None,
+                 use_threshold=True):
 
         self.weights = np.random.randn(input_size + 1)
         self.inputs = [[0, 0], [0, 1], [1, 0], [1, 1]]
@@ -21,6 +22,7 @@ class Perceptron:
         self.expected_or_output = [0, 1, 1, 1]
         self.expected_xor_output = [0, 1, 1, 0]
         self.expected_output = self.get_expected_output()
+        self.use_threshold = use_threshold
 
         self.thresholds = thresholds if thresholds is not None else {
             "step": 0,
@@ -46,11 +48,15 @@ class Perceptron:
         return np.maximum(0, x)
 
     def get_activation_function(self) -> Callable[[np.ndarray], np.ndarray]:
-        """Retrieves the activation function with its threshold."""
+        """Retrieves the activation function with or without its threshold."""
         activation_name = self.activator.lower()
         activation_fn = getattr(self, activation_name, self.step)
-        threshold = self.thresholds[activation_name]
-        return lambda x: np.where(activation_fn(x) >= threshold, 1, 0)  # Apply threshold within lambda
+
+        if self.use_threshold:
+            threshold = self.thresholds[activation_name]
+            return lambda x: np.where(activation_fn(x) >= threshold, 1, 0)  # Apply threshold
+        else:
+            return activation_fn  # No thresholdhin lambda
 
     def get_expected_output(self: 'Perceptron') -> Union[List[int], None]:
         if self.logic_to_apply == 'AND':

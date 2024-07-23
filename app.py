@@ -1,6 +1,8 @@
 from perceptron import Perceptron
 import numpy as np
 import toml
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 
 def perceptron_quality(num_tests):
@@ -25,8 +27,35 @@ def perceptron_quality(num_tests):
 
 
 cfg = toml.load('.streamlit/config.toml')
-perceptron = Perceptron(logic_to_apply='AND', learning_rate=0.01)
-perceptron.train(1000)
+perceptron = Perceptron(logic_to_apply='OR', learning_rate=0.002,activator='SIGMOID', use_threshold=False)
+perceptron.train(100)
 
 acc = perceptron_quality(500)
 print(f"Accuracy: {acc:.2f}%")
+
+
+def train_and_track_error(perceptron, epochs):
+    errors = []
+    for epoch in range(epochs):
+        total_error = 0
+        for x, expected_output in zip(perceptron.inputs, perceptron.expected_output):
+            predicted_output = perceptron.predict(x)
+            error = expected_output - predicted_output
+            x_with_bias = np.insert(x, 0, 1)  # Add bias only for weight update
+            perceptron.weights += perceptron.learning_rate * error * x_with_bias
+            total_error += abs(error)
+        errors.append(total_error)
+    return errors
+
+
+# Training with error tracking
+errors = train_and_track_error(perceptron, 1000)
+
+# Plotting with Seaborn
+sns.set_theme(style="darkgrid")
+plt.figure(figsize=(10, 6))
+sns.lineplot(x=range(1, 1001), y=errors, marker="o")
+plt.title("Perceptron Training Error vs. Epochs")
+plt.xlabel("Epoch")
+plt.ylabel("Total Absolute Error")
+plt.show()
