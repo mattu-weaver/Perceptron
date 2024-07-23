@@ -11,7 +11,7 @@ class Perceptron:
                  thresholds: Dict[str, float] = None):
 
         self.weights = np.random.randn(input_size + 1)
-        self.inputs = [[0, 0], [0, 1], [1, 0], [1, 1]]
+        self.inputs = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
         self.learning_rate = learning_rate
         self.activator = activator
         self.input_size = input_size

@@ -3,6 +3,7 @@ import numpy as np
 import toml
 
 
+"""
 def perceptron_quality(num_tests):
     num_correct = 0
 
@@ -22,6 +23,30 @@ def perceptron_quality(num_tests):
             num_correct += 1
 
     return (num_correct / num_tests) * 100
+"""
+
+def perceptron_quality(num_tests):
+    num_correct = 0
+    for _ in range(num_tests):
+        input_data = np.random.randint(0, 2, size=2)
+
+        # No conversion needed, input_data is already a NumPy array
+        predicted_output = perceptron.predict(input_data)
+
+        # Find the index using NumPy's array comparison
+        index = np.where(np.all(perceptron.inputs == input_data, axis=1))[0]
+
+        # Handle the case where input_data is not found in perceptron.inputs
+        if len(index) == 0:
+            continue
+
+        expected_output = perceptron.get_expected_output()[index[0]]
+
+        if predicted_output == expected_output:
+            num_correct += 1
+
+    return (num_correct / num_tests) * 100
+
 
 
 cfg = toml.load('.streamlit/config.toml')
