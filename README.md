@@ -22,7 +22,7 @@ The [`perceptron.py`](perceptron.py) file defines a class called Perceptron - th
 
 ![A simple perceptron](https://miro.medium.com/v2/resize:fit:1100/format:webp/1*dsVvCeoxlU4GZ1y701Mo8g.png)
 
-The image shows a percpetron with 4 inputs, for our scenario, there are only 2.
+The image shows a perceptron with 4 inputs, for our scenario, there are only 2.
 
 ## The process in a nutshell
 - We create a new Perceptron and specify if we want it to learn the AND or OR operation.
