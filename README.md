@@ -32,7 +32,7 @@ The image shows a perceptron with 4 inputs, for our scenario, there are only 2.
 - The app does this many times and reports how successul it was.
 
 ## What happens during training?
-- We expect the errors between predicted and actual values for A AND B or A OR B to decrease over time. The decrease in errors depends on the parameters we use, especially the activator function and the learning rate. While each training process is different, a few examples are provided here. The plot legend shows what parameters were used during training.
+- We expect the errors between predicted and actual values for A AND B or A OR B to decrease over time. The decrease in errors depends on the parameters we use, especially the activator function and the learning rate. While each training process is different, a few examples are provided here. The plot legend shows what parameters were used during the training process.
 
 !['P1'](images/p1.png)
 !['P2'](images/P2.png)
