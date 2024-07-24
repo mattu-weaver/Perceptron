@@ -1,6 +1,6 @@
 from typing import Dict, List, Union, Optional, Callable
 import numpy as np
-import matplotlib.pyplot as plt
+import streamlit as st
 
 
 class Perceptron:
@@ -69,12 +69,12 @@ class Perceptron:
         else:
             return None
 
-    def train(self, epochs: int = 10, info_text: str = "") -> None:
+    def train(self, epochs: int = 10) -> List[float]:
         activation_function = getattr(self, self.activator.lower(), self.step)
         errors = []
 
         for epoch in range(epochs):
-            epoch_errors = []  # List to store errors for each example in this epoch
+            epoch_errors = []
 
             for x, expected_output in zip(self.inputs, self.expected_output):
                 x = np.insert(x, 0, 1)
@@ -88,19 +88,7 @@ class Perceptron:
             avg_epoch_error = sum(epoch_errors) / len(epoch_errors)
             errors.append(avg_epoch_error)
 
-            # Plot the error over epochs
-        plt.plot(range(1, epochs + 1), errors, marker='o')
-        plt.xlabel('Epoch')
-        plt.ylabel('Average Error')
-        plt.title('Perceptron Training')
-
-        # Add text box with information
-        if info_text:
-            props = dict(boxstyle='round', facecolor='tab:orange', alpha=0.6)
-            plt.text(0.95, 0.95, info_text, transform=plt.gca().transAxes,
-                     fontsize=10, horizontalalignment='right', verticalalignment='top', bbox=props)
-
-        plt.show()
+        return errors  # Return the list of errors
 
     def predict(self, x: np.ndarray) -> np.ndarray:
         x = np.insert(x, 0, 1)
