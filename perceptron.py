@@ -1,4 +1,4 @@
-from typing import Dict, List, Union, Optional, Callable
+from typing import Dict, List, Tuple, Union, Optional, Callable
 import numpy as np
 import streamlit as st
 
@@ -69,17 +69,18 @@ class Perceptron:
         else:
             return None
 
-    def train(self, epochs: int = 10) -> List[float]:
+    def train(self, epochs: int = 10) -> Tuple[np.ndarray, List[float], List[np.ndarray], List[float]]:
         activation_function = getattr(self, self.activator.lower(), self.step)
         errors = []
+        weight_history = []  # Don't initialize with initial weights
+        weighted_sums = []
 
         for epoch in range(epochs):
             epoch_errors = []
-
             for x, expected_output in zip(self.inputs, self.expected_output):
                 x = np.insert(x, 0, 1)
                 weighted_sum = np.dot(x, self.weights)
-
+                weighted_sums.append(weighted_sum)
                 predicted_output = activation_function(weighted_sum)
                 error = expected_output - predicted_output
                 epoch_errors.append(abs(error))
@@ -87,8 +88,9 @@ class Perceptron:
 
             avg_epoch_error = sum(epoch_errors) / len(epoch_errors)
             errors.append(avg_epoch_error)
+            weight_history.append(self.weights.copy())  # Store weights after each epoch
 
-        return errors  # Return the list of errors
+        return self.weights, errors, weight_history, weighted_sums
 
     def predict(self, x: np.ndarray) -> np.ndarray:
         x = np.insert(x, 0, 1)
