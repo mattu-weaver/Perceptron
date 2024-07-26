@@ -69,7 +69,7 @@ class Perceptron:
         else:
             return None
 
-    def train(self, epochs: int = 10) -> Tuple[np.ndarray, List[float], List[np.ndarray], List[float]]:
+    def train(self: 'Perceptron', epochs: int = 10) -> Tuple[np.ndarray, List[float], List[np.ndarray], List[float]]:
         activation_function = getattr(self, self.activator.lower(), self.step)
         errors = []
         weight_history = []  # Don't initialize with initial weights

@@ -25,7 +25,6 @@ def perceptron_quality(pctron: Perceptron, test_count: int, logic: str) -> float
     return (num_correct / test_count) * 100
 
 
-
 def create_legend(*args: any) -> str:
     """
     Create a legend to display the parameters
